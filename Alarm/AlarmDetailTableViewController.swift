@@ -9,38 +9,77 @@
 import UIKit
 
 class AlarmDetailTableViewController: UITableViewController {
+    
+    
+    
+    
+    private func updateViews() {
+        
+        myAlarmDatePicker.date = alarm?.fireDate ?? Date()
+        alarmNameTextField.text = alarm?.name
+        detailButton.titleLabel?.isEnabled = alarm?.enabled ?? false
+        
+    }
+    
+    var alarmIsOn: Bool = true
+    
+
+    
+    @IBOutlet weak var myAlarmDatePicker: UIDatePicker!
+    @IBOutlet weak var alarmNameTextField: UITextField!
+    @IBOutlet weak var detailButton: UIButton!
+    
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
+        }
+    
+   
+    //landing pad
+    var alarm: Alarm? {
+    didSet {
+        loadViewIfNeeded()
+        updateViews()
+        }
     }
 
+    @IBAction func enableButtonTapped(_ sender: UIButton) {
+    }
+    
+    @IBAction func saveButtonTapped(_ sender: UIBarButtonItem) {
+        guard alarmNameTextField.text != "",
+        let alarmName = alarmNameTextField.text,
+            let alarmDate = myAlarmDatePicker?.date else {return}
+        if let myAlarm = alarm {
+            AlarmController.shared.update(alarm: myAlarm, fireDate: alarmDate, name: alarmName, enabled: true)
+        } else {
+            AlarmController.shared.addAlarm(fireDate: alarmDate, name: alarmName, enabled: true)
+        }
+        navigationController?.popViewController(animated: true)
+            
+    }
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 0
+        return 3
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 0
+        return 1
     }
 
-    /*
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
+    
+    //override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+      //  let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
 
         // Configure the cell...
 
-        return cell
-    }
-    */
+        //return cell
+//  }
+    
 
     /*
     // Override to support conditional editing of the table view.
@@ -87,4 +126,4 @@ class AlarmDetailTableViewController: UITableViewController {
     }
     */
 
-}
+} // end of class

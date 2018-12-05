@@ -8,7 +8,7 @@
 
 import Foundation
 
-class Alarm {
+class Alarm: Equatable {
     var fireDate: Date
     var name: String
     var enabled: Bool
